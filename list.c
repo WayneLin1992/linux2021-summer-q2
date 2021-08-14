@@ -245,7 +245,7 @@ try_again:
                 *par_curr = curr;
                 *par_prev = prev;
                 *par_next = next;
-                return get_unmarked_node(curr)->key == *key; /FFF
+                return get_unmarked_node(curr)->key == *key; //FFF
             }
             prev = &get_unmarked_node(curr)->next;
             (void) list_hp_protect_release(list->hp, HP_PREV,
