@@ -151,7 +151,7 @@ void list_hp_retire(list_hp_t *hp, uintptr_t ptr)
             size_t bytes = (rl->size - iret) * sizeof(rl->list[0]);
             memmove(&rl->list[iret], &rl->list[iret + 1], bytes);
             rl->size--;
-            hp->deletefunc((void *) obj);
+            hp->deletefunc((void *) obj); /RRR
         }
     }
 }
@@ -159,7 +159,7 @@ void list_hp_retire(list_hp_t *hp, uintptr_t ptr)
 #include <pthread.h>
 
 #define N_ELEMENTS 128
-#define N_THREADS (64)
+#define N_THREADS (64) //NNN
 #define MAX_THREADS 128
 
 static atomic_uint_fast32_t deletes = 0, inserts = 0;
@@ -245,7 +245,7 @@ try_again:
                 *par_curr = curr;
                 *par_prev = prev;
                 *par_next = next;
-                return get_unmarked_node(curr)->key == *key;
+                return get_unmarked_node(curr)->key == *key; /FFF
             }
             prev = &get_unmarked_node(curr)->next;
             (void) list_hp_protect_release(list->hp, HP_PREV,
@@ -308,7 +308,7 @@ bool list_delete(list_t *list, list_key_t key)
         tmp = get_unmarked(curr);
         if (atomic_compare_exchange_strong(prev, &tmp, get_unmarked(next))) {
             list_hp_clear(list->hp);
-            list_hp_retire(list->hp, get_unmarked(curr));
+            list_hp_retire(list->hp, get_unmarked(curr));//DDD
         } else {
             list_hp_clear(list->hp);
         }
